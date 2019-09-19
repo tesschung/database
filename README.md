@@ -42,7 +42,7 @@
 
 [**DATATYPE**](https://www.guru99.com/sqlite-data-types.html)
 
-![SQLlite_datatype](\images\SQLlite_datatype.jpg)
+![SQLlite_datatype](.\images\SQLlite_datatype.jpg)
 
 
 
@@ -495,3 +495,5 @@ last_name   first_name
 
 
 :three: DCL 
+
+: **GRANT, REVOKE, COMMIT, ROLLBACK**
