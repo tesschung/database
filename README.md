@@ -38,11 +38,9 @@
 
 - 데이터베이스에서의 자료의 구조, 표현방법, 관계들을 정의한 구조
 
-
+  
 
 [**DATATYPE**](https://www.guru99.com/sqlite-data-types.html)
-
-![SQLlite_datatype](.\images\SQLlite_datatype.jpg)
 
 
 
