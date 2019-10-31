@@ -46,15 +46,17 @@
 
 1. 모든 user 레코드 조회
 
+   :heavy_check_mark:
+
    ```python
    # orm
    User.objects.all()
    ```
 
-      ```sql
+   ```sql
    -- sql
    SELECT * FROM users_user;
-      ```
+   ```
 
 2. user 레코드 생성
 
@@ -111,14 +113,14 @@
 
 5. 해당 user 레코드 삭제
 
-      ```python
+   ```python
    # orm
    User.objects.get(pk=101).delete()
    
    # user = User.objects.get(pk=101)
    # user.delete()
    ```
-   
+
    ```sql
    -- sql
    DELETE FROM users_user
