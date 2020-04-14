@@ -492,6 +492,64 @@ last_name   first_name
 
 
 
+> 심화
+
+GROUP BY 절은 데이터들을 원하는 그룹으로 나눌 수 있다.
+
+나누고자 하는 그룹의 컬럼명을 SELECT절과 GROUP BY절 뒤에 추가하면 된다.
+
+집계함수와 함께 사용되는 상수는 GROUP BY 절에 추가하지 않아도 된다.
+
+```SQL
+# GROUP BY
+SELECT '2005년' year, deptno 부서번호, COUNT(*) 사원수
+FROM emp
+GROUP BY deptno
+ORDER BY COUNT(*) DESC;
+```
+
+
+
+HAVING절은 GROUP BY절과 함께 사용이 된다.
+
+```SQL
+SELECT b.dname, COUNT(a.empno) "사원수"
+FROM emp a, dept b
+WHERE a.deptno = b.deptno
+GROUP BY dname
+HAVING COUNT(a.empno) > 5;
+```
+
+
+
+변수선언 방법 2가지
+
+SET @변수명 = '값';
+
+SET @변수명 := '값'; 
+
+*변수 선언시 '='와 ':='는 차이가 없다.
+
+하지만 SET을 제외한 다른 쿼리문(SELECT 등)은 '=' 를 비교연산자(comparison operator)로 인식하기 때문에, SET이 아닌 쿼리문에서는 반드시 대입 연산자(assignment operator) ':='을 사용해야 한다.
+
+
+
+\1. 수식연산자 (예: +, -, *, /)
+
+\2. 문자연산자 (예: ||)
+
+\3. 논리연산자 (예: =,<,>,<> 등)
+
+\4. 집합연산자 (예: UNION, INTERSECT 등)
+
+\5. 계층형 쿼리연산자
+
+
+
+
+
+
+
 :three: DCL 
 
 : **GRANT, REVOKE, COMMIT, ROLLBACK**

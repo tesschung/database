@@ -123,6 +123,12 @@ SELECT MAX(DATETIME) FROM ANIMAL_INS;
 
 
 
+
+
+> 최솟값 구하기
+
+
+
 가장 늦게 들어온 동물은 언제 들어왔는지 조회하는 SQL 문
 
 ```SQL
@@ -131,19 +137,106 @@ SELECT MIN(DATETIME) FROM ANIMAL_INS;
 
 
 
-> 최솟값 구하기
+> 동물 수 구하기
 
 
 
+```SQL
+SELECT COUNT(*) FROM ANIMAL_INS;
+```
 
 
 
+> 중복 제거하기
 
 
+
+```SQL
+SELECT COUNT(DISTINCT NAME) FROM ANIMAL_INS;
+```
+
+
+
+- DISTINCT 키워드를 필드명 앞에 붙여주면 중복이 제거된 정보를 조회할 수 있고, 이를 괄호로 감싸 COUNT 키워드를 붙여주면 해당 필드의 개수를 세어준다.
 
 
 
 ## GROUP BY
+
+> 고양이와 개는 몇 마리 있을까
+
+
+
+```SQL
+SELECT ANIMAL_TYPE, COUNT(ANIMAL_TYPE) FROM ANIMAL_INS
+GROUP BY ANIMAL_TYPE;
+```
+
+<img src="programmers.assets/image-20200414234721053.png" alt="image-20200414234721053" style="zoom:50%;" />
+
+
+
+> 동명 동물 수 찾기
+
+
+
+동물 보호소에 들어온 동물 이름 중 두 번 이상 쓰인 이름과 해당 이름이 쓰인 횟수를 조회하는 SQL문을 작성해주세요. 이때 결과는 이름이 없는 동물은 집계에서 제외하며, 결과는 이름 순으로 조회해주세요.
+
+```SQL
+SELECT NAME, COUNT(NAME) FROM ANIMAL_INS 
+GROUP BY NAME 
+HAVING COUNT(NAME) >= 2;
+```
+
+
+
+- GROUP BY와 HAVING은 함께 쓰인다.
+
+
+
+> 입양 시각 구하기(1)
+
+
+
+보호소에서는 몇 시에 입양이 가장 활발하게 일어나는지 알아보려 합니다. 9시부터 19시까지, 각 시간대별로 입양이 몇 건이나 발생했는지 조회하는 SQL문을 작성해주세요. 이때 결과는 시간대 순으로 정렬해야 합니다.
+
+```SQL
+SELECT HOUR(DATETIME) AS HOUR, # AS로 필드명을 변경할 수 있다.
+COUNT(HOUR(DATETIME)) AS COUNT 
+FROM ANIMAL_OUTS
+WHERE HOUR(DATETIME) >= 9 
+AND HOUR(DATETIME) <= 19
+GROUP BY HOUR(DATETIME);
+```
+
+<img src="programmers.assets/image-20200414235815903.png" alt="image-20200414235815903" style="zoom:50%;" />
+
+> 입양 시각 구하기(2)
+
+
+
+보호소에서는 몇 시에 입양이 가장 활발하게 일어나는지 알아보려 합니다. 0시부터 23시까지, 각 시간대별로 입양이 몇 건이나 발생했는지 조회하는 SQL문을 작성해주세요. 이때 결과는 시간대 순으로 정렬해야 합니다.
+
+```SQL
+SET @HOUR_LIST = -1; # 변수를 -1로 선언한다.
+
+SELECT (@HOUR_LIST := @HOUR_LIST + 1) AS 'HOUR', 
+# +1씩 해준다.
+(SELECT COUNT(*) FROM ANIMAL_OUTS WHERE HOUR(DATETIME) = @HOUR_LIST) AS 'COUNTS' 
+# 0부터 23까지 쭉 WHERE로 돌면서 해당 필드를 COUNT한다.
+# 그러면 GROUP BY로 했을때 돌지못하는(==카운트할 데이터가 없는)
+# 것에 대한 정보를 얻을 수 있다.
+FROM ANIMAL_OUTS 
+WHERE @HOUR_LIST < 23; 
+```
+
+SET으로 HOUR_LIST라는 변수를 선언하고 +1 씩 하며 0~23시 까지 모든 시간에 대한 COUNT를 출력
+
+
+
+
+
+
 
 
 
