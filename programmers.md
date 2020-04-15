@@ -1,14 +1,12 @@
 https://programmers.co.kr/learn/challenges
 
+`ANIMAL_INS` 테이블은 동물 보호소에 들어온 동물의 정보를 담은 테이블입니다. `ANIMAL_INS` 테이블 구조는 다음과 같으며, 
+
+`ANIMAL_ID`, `ANIMAL_TYPE`, `DATETIME`, `INTAKE_CONDITION`, `NAME`, `SEX_UPON_INTAKE`는 각각 동물의 아이디, 생물 종, 보호 시작일, 보호 시작 시 상태, 이름, 성별 및 중성화 여부를 나타냅니다.
+
 
 
 ## SELECT
-
-`ANIMAL_INS` 테이블은 동물 보호소에 들어온 동물의 정보를 담은 테이블입니다. `ANIMAL_INS` 테이블 구조는 다음과 같으며, 
-
-`ANIMAL_ID`, `ANIMAL_TYPE`, `DATETIME`, `INTAKE_CONDITION`, `NAME`, `SEX_UPON_INTAKE`는 
-
-각각 동물의 아이디, 생물 종, 보호 시작일, 보호 시작 시 상태, 이름, 성별 및 중성화 여부를 나타냅니다.
 
 
 
@@ -48,7 +46,9 @@ SELECT NAME, DATETIME FROM ANIMAL_INS ORDER BY ANIMAL_ID DESC;
 동물 보호소에 들어온 동물 중 아픈 동물의 아이디와 이름을 조회하는 SQL 문을 작성해주세요. 이때 결과는 아이디 순으로 조회해주세요.
 
 ```SQL
-SELECT ANIMAL_ID, NAME FROM ANIMAL_INS WHERE INTAKE_CONDITION LIKE "sick" ORDER BY ANIMAL_ID ASC;
+SELECT ANIMAL_ID, NAME FROM ANIMAL_INS 
+WHERE INTAKE_CONDITION LIKE "sick" 
+ORDER BY ANIMAL_ID ASC;
 ```
 
 
@@ -60,7 +60,9 @@ SELECT ANIMAL_ID, NAME FROM ANIMAL_INS WHERE INTAKE_CONDITION LIKE "sick" ORDER 
 동물 보호소에 들어온 동물 중 젊은 동물[1](https://programmers.co.kr/learn/courses/30/lessons/59037?language=mysql#fn1)의 아이디와 이름을 조회하는 SQL 문을 작성해주세요. 이때 결과는 아이디 순으로 조회해주세요.
 
 ```SQL
-SELECT ANIMAL_ID, NAME FROM ANIMAL_INS WHERE INTAKE_CONDITION NOT LIKE "Aged";
+SELECT ANIMAL_ID, NAME FROM ANIMAL_INS 
+WHERE INTAKE_CONDITION 
+NOT LIKE "Aged";
 ```
 
 
@@ -72,7 +74,8 @@ SELECT ANIMAL_ID, NAME FROM ANIMAL_INS WHERE INTAKE_CONDITION NOT LIKE "Aged";
 아이디와 이름 모두 오름차순으로 조회해주세요.
 
 ```SQL
-SELECT ANIMAL_ID, NAME FROM ANIMAL_INS ORDER BY ANIMAL_ID, NAME ASC;
+SELECT ANIMAL_ID, NAME FROM ANIMAL_INS 
+ORDER BY ANIMAL_ID, NAME ASC;
 ```
 
 
@@ -88,7 +91,8 @@ SELECT ANIMAL_ID, NAME FROM ANIMAL_INS ORDER BY ANIMAL_ID, NAME ASC;
 
 
 ```SQL
-SELECT ANIMAL_ID, NAME, DATETIME FROM ANIMAL_INS ORDER BY NAME ASC, DATETIME DESC;
+SELECT ANIMAL_ID, NAME, DATETIME FROM ANIMAL_INS 
+ORDER BY NAME ASC, DATETIME DESC;
 ```
 
 
@@ -104,7 +108,9 @@ SELECT ANIMAL_ID, NAME, DATETIME FROM ANIMAL_INS ORDER BY NAME ASC, DATETIME DES
 동물 보호소에 가장 먼저 들어온 동물의 이름을 조회하는 SQL 문
 
 ```SQL
-SELECT NAME FROM ANIMAL_INS ORDER BY DATETIME ASC LIMIT 1;
+SELECT NAME FROM ANIMAL_INS 
+ORDER BY DATETIME ASC 
+LIMIT 1;
 ```
 
 
@@ -157,7 +163,7 @@ SELECT COUNT(DISTINCT NAME) FROM ANIMAL_INS;
 
 
 
-- DISTINCT 키워드를 필드명 앞에 붙여주면 중복이 제거된 정보를 조회할 수 있고, 이를 괄호로 감싸 COUNT 키워드를 붙여주면 해당 필드의 개수를 세어준다.
+- `DISTINCT` 키워드를 필드명 앞에 붙여주면 중복이 제거된 정보를 조회할 수 있고, 이를 괄호로 감싸 `COUNT` 키워드를 붙여주면 해당 필드의 개수를 세어준다.
 
 
 
@@ -204,12 +210,16 @@ HAVING COUNT(NAME) >= 2;
 SELECT HOUR(DATETIME) AS HOUR, # AS로 필드명을 변경할 수 있다.
 COUNT(HOUR(DATETIME)) AS COUNT 
 FROM ANIMAL_OUTS
+
 WHERE HOUR(DATETIME) >= 9 
 AND HOUR(DATETIME) <= 19
+
 GROUP BY HOUR(DATETIME);
 ```
 
 <img src="programmers.assets/image-20200414235815903.png" alt="image-20200414235815903" style="zoom:50%;" />
+
+
 
 > 입양 시각 구하기(2)
 
@@ -234,21 +244,58 @@ SET으로 HOUR_LIST라는 변수를 선언하고 +1 씩 하며 0~23시 까지 �
 
 
 
-
-
-
-
-
-
-
-
 ## IS NULL
+
+
+
+> 이름이 없는 동물의 아이디
+
+
+
+```SQL
+SELECT ANIMAL_ID FROM ANIMAL_INS
+WHERE  NAME IS NULL;
+```
+
+* `NULL`은 `IS NULL`, `IS NOT NULL` 연산자를 통해서만 비교가 된다.
+
+
+
+> 이름이 있는 동물의 아이디
+
+
+
+```SQL
+SELECT ANIMAL_ID FROM ANIMAL_INS 
+WHERE NAME IS NOT NULL # 먼저 IS NOT NULL인 애들로 가져온 후
+ORDER BY ANIMAL_ID ASC; # 오름차순으로 정렬해준다. 
+```
+
+
+
+> NULL 처리하기
+
+
+
+입양 게시판에 동물 정보를 게시하려 합니다. 동물의 생물 종, 이름, 성별 및 중성화 여부를 아이디 순으로 조회하는 SQL문을 작성해주세요. 이때 프로그래밍을 모르는 사람들은 NULL이라는 기호를 모르기 때문에, 이름이 없는 동물의 이름은 No name으로 표시해 주세요.
+
+```SQL
+SELECT ANIMAL_TYPE, IFNULL(NAME, "No name") AS NAME,  SEX_UPON_INTAKE
+# 만약 NULL이라면 NAME을 "No name"으로 변경한다.
+FROM ANIMAL_INS;
+```
 
 
 
 ## JOIN
 
 
+
+> 없어진 기록 찾기
+
+
+
+천재지변으로 인해 일부 데이터가 유실되었습니다. 입양을 간 기록은 있는데, 보호소에 들어온 기록이 없는 동물의 ID와 이름을 ID 순으로 조회하는 SQL문을 작성해주세요.
 
 
 

@@ -534,15 +534,34 @@ SET @변수명 := '값';
 
 
 
-\1. 수식연산자 (예: +, -, *, /)
+`NULL`은 `IS NULL`, `IS NOT NULL` 연산자를 통해서만 비교가 된다. (WHERE문에서 사용)
 
-\2. 문자연산자 (예: ||)
+```SQL
+SELECT ANIMAL_ID FROM ANIMAL_INS 
+WHERE NAME IS NOT NULL # 먼저 IS NOT NULL인 애들로 가져온 후
+ORDER BY ANIMAL_ID ASC; # 오름차순으로 정렬해준다. 
+```
 
-\3. 논리연산자 (예: =,<,>,<> 등)
 
-\4. 집합연산자 (예: UNION, INTERSECT 등)
 
-\5. 계층형 쿼리연산자
+`IFNULL(A, B)`은 A가 NULL이면 B를, 그렇지 않다면 A가 나온다. (SELECT문에서 사용)
+
+```SQL
+SELECT ANIMAL_ID, ANIMAL_TYPE, IFNULL (NAME, "No name") AS NAME, SEX_UPON_INTAKE
+FROM ANIMAL_INS;
+```
+
+
+
+1. 수식연산자 (예: +, -, *, /)
+
+2. 문자연산자 (예: ||)
+
+3. 논리연산자 (예: =,<,>,<> 등)
+
+4. 집합연산자 (예: UNION, INTERSECT 등)
+
+5. 계층형 쿼리연산자
 
 
 
