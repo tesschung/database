@@ -403,3 +403,91 @@ AND B.SEX_UPON_OUTCOME NOT LIKE "Intact%"; # 더이상 Intact가 아닌 것을 �
 
 동물 보호소에 들어온 동물 중 이름이 Lucy, Ella, Pickle, Rogan, Sabrina, Mitty인 동물의 아이디와 이름, 성별을 조회하는 SQL 문을 작성해주세요.
 
+```SQL
+SELECT ANIMAL_ID, NAME, SEX_UPON_INTAKE 
+FROM ANIMAL_INS
+WHERE NAME = "Lucy" 
+OR NAME = "Ella" 
+OR NAME = "Pickle"
+OR NAME = "Rogan"
+OR NAME = "Sabrina"
+OR NAME = "Mitty";
+```
+
+
+
+> 이름에 el이 들어가는 동물 찾기
+
+
+
+보호소에 돌아가신 할머니가 기르던 개를 찾는 사람이 찾아왔습니다. 이 사람이 말하길 할머니가 기르던 개는 이름에 'el'이 들어간다고 합니다. 동물 보호소에 들어온 동물 이름 중, 이름에 EL이 들어가는 개의 아이디와 이름을 조회하는 SQL문을 작성해주세요. 이때 결과는 이름 순으로 조회해주세요. 단, 이름의 대소문자는 구분하지 않습니다.
+
+1. ANIMAL_INS에서 ANIMAL_ID와 NAME을 조회하는데,
+2. NAME에서 EL이 들어가는 것을 조회하고,
+3. ANIMAL_TYPE이 Dog 인 것을 조회한다.
+4. 그리고 NAME 순으로 조회한다.
+
+```SQL
+SELECT ANIMAL_ID, NAME FROM ANIMAL_INS
+WHERE NAME LIKE '%EL%' AND
+ANIMAL_TYPE = 'Dog'
+ORDER BY NAME;
+```
+
+
+
+> 중성화 여부 파악하기
+
+
+
+보호소의 동물이 중성화되었는지 아닌지 파악하려 합니다. 중성화된 동물은 `SEX_UPON_INTAKE` 컬럼에 'Neutered' 또는 'Spayed'라는 단어가 들어있습니다. 동물의 아이디와 이름, 중성화 여부를 아이디 순으로 조회하는 SQL문을 작성해주세요. 이때 중성화가 되어있다면 'O', 아니라면 'X'라고 표시해주세요.
+
+```SQL
+SELECT ANIMAL_ID, NAME, 
+CASE 
+WHEN SEX_UPON_INTAKE LIKE 'Intact%' THEN 'X' ELSE 'O'
+END AS '중성화'
+FROM ANIMAL_INS;
+```
+
+
+
+> 오랜 기간 보호한 동물(2)
+
+
+
+입양을 간 동물 중, 보호 기간이 가장 길었던 동물 두 마리의 아이디와 이름을 조회하는 SQL문을 작성해주세요. 이때 결과는 보호 기간이 긴 순으로 조회해야 합니다
+
+
+
+1. DATETIME이 둘다 존재하는 교집합인 데이터를 조회한다.
+2. ANIMAL_OUTS의 데이터가 존재한다면, 입양 간 동물이라고 할 수 있다.
+3. 그리고, 입양날짜 - 보호날짜를 해주면, 보호기간이 나온다.
+4. 이를 내림차순으로 정렬 후
+5. 위에서 2마리만 조회한다.
+
+
+
+```SQL
+SELECT A.ANIMAL_ID, A.NAME
+FROM ANIMAL_INS A LEFT JOIN ANIMAL_OUTS B
+ON A.ANIMAL_ID = B.ANIMAL_ID
+-- JOIN ~ ON 맞춰준다.
+WHERE B.DATETIME IS NOT NULL
+ORDER BY (B.DATETIME-A.DATETIME) DESC
+LIMIT 2;
+```
+
+
+
+> DATETIME에서 DATE로 형 변환
+
+
+
+```SQL
+SELECT ANIMAL_ID, NAME, 
+DATE_FORMAT(DATETIME, '%Y-%m-%d') AS 날짜
+--DATE_FORMAT(필드명, FORMATTING) AS 새로운필드명
+FROM ANIMAL_INS;
+```
+
