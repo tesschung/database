@@ -1,6 +1,12 @@
 :star: 해당 README는 키워드만 작성, 자세한 사항은 PDF를 참고하여 공부하시면 됩니다. :star:
 
-[SQL grammar](https://www.sqlite.org/lang.html)
+[SQL Grammar](https://www.sqlite.org/lang.html)
+
+[SQL Programmers](https://github.com/tesschung/database/blob/master/programmers.md)
+
+*Oracle SQL 문법이 아닙니다.
+
+
 
 **데이터베이스(DB)**
 
